@@ -1,0 +1,37 @@
+[project]
+name = "talk-to-type"
+version = "0.1.0"
+description = "Hold-to-talk dictation for Linux (KDE Wayland first)"
+readme = "README.md"
+authors = [
+    { name = "Vibra-Ingenn", email = "pure.solid.karma@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "evdev>=2.0.0",
+    "numpy>=2.5.5",
+    "pillow>=13.0.0",
+    "pygobject>=3.58.1",
+    "pyqt6>=6.12.1",
+    "pystray>=0.19.5",
+    "pytest>=9.2.0",
+    "pywhispercpp>=1.5.1",
+    "requests>=2.34.2",
+    "sounddevice>=0.5.6",
+    "vosk>=0.3.45",
+]
+
+[project.scripts]
+talk-to-type = "talk_to_type.service_main:main"
+talk-to-type-test-pipeline = "talk_to_type.tools.test_pipeline_cli:main"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.uv]
+package = true

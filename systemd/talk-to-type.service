@@ -1,0 +1,15 @@
+[Unit]
+Description=talk-to-type hold-to-talk dictation
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/Dev/talk-to-type/.venv/bin/talk-to-type
+Restart=on-failure
+RestartSec=3
+Environment=QT_QPA_PLATFORM=wayland;xcb
+Environment=DISPLAY=:0
+
+[Install]
+WantedBy=graphical-session.target
