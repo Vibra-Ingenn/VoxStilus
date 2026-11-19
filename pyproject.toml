@@ -23,7 +23,10 @@ dependencies = [
 
 [project.scripts]
 talk-to-type = "talk_to_type.service_main:main"
+talk-to-type-ibus = "talk_to_type.ibus_engine_proc:main"
 talk-to-type-test-pipeline = "talk_to_type.tools.test_pipeline_cli:main"
+talk-to-type-live-proof = "talk_to_type.tools.live_ibus_proof:main"
+talk-to-type-offline-proof = "talk_to_type.tools.offline_clip_proof:main"
 
 [build-system]
 requires = ["uv_build>=0.13.5,<0.14.0"]

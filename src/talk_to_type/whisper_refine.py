@@ -13,6 +13,48 @@ from .constants import SAMPLE_RATE
 
 logger = logging.getLogger(__name__)
 
+WHISPER_MIN_PCM_MS = 200
+WHISPER_JUNK_MARKERS = ("[blank_audio]", "[ silence ]", "[silence]")
+
+
+def pcm16_duration_ms(pcm: bytes) -> float:
+    if not pcm:
+        return 0.0
+    samples = len(pcm) // 2
+    return samples * 1000.0 / SAMPLE_RATE
+
+
+def trim_trailing_silence_pcm(pcm: bytes, rms_threshold: float = 0.003) -> bytes:
+    if not pcm:
+        return pcm
+    step = SAMPLE_RATE // 20
+    end = len(pcm)
+    while end > step * 2:
+        tail = pcm[end - step : end]
+        arr = np.frombuffer(tail, dtype=np.int16).astype(np.float32)
+        rms = float(np.sqrt(np.mean(arr * arr)) / 32768.0)
+        if rms < rms_threshold:
+            end -= step
+        else:
+            break
+    return pcm[:end]
+
+
+def is_whisper_junk(text: str) -> bool:
+    low = text.strip().lower()
+    if not low:
+        return True
+    return any(marker in low for marker in WHISPER_JUNK_MARKERS)
+
+
+def pad_pcm16_min_duration(pcm: bytes, min_ms: float = WHISPER_MIN_PCM_MS) -> bytes:
+    """Pad with silence so whisper.cpp never rejects short audio."""
+    need_ms = max(0.0, min_ms - pcm16_duration_ms(pcm))
+    if need_ms <= 0.0:
+        return pcm
+    pad_samples = int(SAMPLE_RATE * need_ms / 1000.0)
+    return pcm + (b"\x00\x00" * pad_samples)
+
 
 def _float32_from_pcm16(pcm: bytes) -> np.ndarray:
     arr = np.frombuffer(pcm, dtype=np.int16).astype(np.float32) / 32768.0
@@ -71,6 +113,7 @@ class WhisperRefiner:
     def transcribe_pcm(self, pcm: bytes, fallback: str) -> str:
         if not pcm:
             return fallback.strip()
+        pcm = pad_pcm16_min_duration(pcm)
         try:
             self._ensure_model()
         except FileNotFoundError:
@@ -81,7 +124,7 @@ class WhisperRefiner:
             segments = self._model.transcribe(audio, n_threads=4)  # type: ignore[union-attr]
             text = " ".join(seg.text.strip() for seg in segments if seg.text.strip())
             text = text.strip()
-            if text:
+            if text and not is_whisper_junk(text):
                 return text
         except Exception as exc:
             logger.warning("Whisper transcribe failed: %s", exc)

@@ -62,5 +62,9 @@ class VoskStreamer:
     def first_partial_ms(self) -> float | None:
         return self._first_partial_ms
 
+    def reset(self) -> None:
+        self._rec = KaldiRecognizer(self._model, SAMPLE_RATE)
+        self._rec.SetWords(True)
+
     def _elapsed_ms(self) -> float:
         return (time.monotonic() - self._started) * 1000.0
