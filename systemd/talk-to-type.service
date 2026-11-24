@@ -1,15 +1,13 @@
 [Unit]
-Description=talk-to-type hold-to-talk dictation
-After=graphical-session.target
+Description=VoxStilus (Talk-n' Type) hold-to-talk dictation (Go)
+After=graphical-session.target pipewire.service
 PartOf=graphical-session.target
 
 [Service]
 Type=simple
-ExecStart=%h/Dev/talk-to-type/.venv/bin/talk-to-type
+ExecStart=%h/.local/bin/voxstilus
 Restart=on-failure
-RestartSec=3
-Environment=QT_QPA_PLATFORM=wayland;xcb
-Environment=DISPLAY=:0
+RestartSec=2
 
 [Install]
 WantedBy=graphical-session.target

@@ -1,0 +1,10 @@
+# Compiled binary, backups & local runtime state
+go/voxstilus
+go/voxstilus.backup-*
+go/.*.bak-*
+*.bak-*
+.run-data/
+.directory
+
+# Local raw working artwork (curated assets live in assets/)
+Product-Pics/
