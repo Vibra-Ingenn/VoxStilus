@@ -11,7 +11,7 @@ Hold a key, talk, let go — **your finished words paste cleanly into whatever w
 One static pure-Go binary (`CGO_ENABLED=0`). No Python, no `pip`, no Node, no Docker, no Cgo. Built for **COSMIC**, **Niri**, and **KDE Plasma Wayland**.
 
 <p align="center">
-  <img src="assets/banner-waveform-tablet.jpg" alt="VoxStilus (Talk-n' Type) — cyan voice waveform inscribed onto a cuneiform clay tablet by a reed stylus" width="900">
+  <img src="assets/banner-stylus-tablet.jpg" alt="Reed stylus inscribing glowing cuneiform onto a standing clay tablet from a cyan voice waveform" width="900">
 </p>
 
 Free and open source (MIT).
@@ -33,7 +33,7 @@ Free and open source (MIT).
 - **Media auto-ducking & optional local AI cleanup:** Lowers speaker volume (`wpctl`) + pauses media (`playerctl`) while recording, archives 24 hours of local `.wav` recordings, and optionally runs a punctuation/grammar pass through **[Janus](https://github.com/Vibra-Ingenn/Janus)** (default `:8080`) or Ollama (`:11434/v1/chat/completions`).
 
 <p align="center">
-  <img src="assets/banner-stylus-tablet.jpg" alt="Reed stylus inscribing glowing cuneiform onto a standing clay tablet from a cyan voice waveform" width="900">
+  <img src="assets/banner-library.jpg" alt="Scribe in an ancient library as a cyan voice stream rises into glowing cuneiform tablets" width="900">
 </p>
 
 ---
@@ -64,7 +64,7 @@ cd VoxStilus
 ./install.sh
 ```
 
-`./install.sh` compiles the static `CGO_ENABLED=0` Go binary, installs `~/.local/bin/voxstilus` and `voxstilus-settings`, installs the **VoxStilus** icons (`128`/`256`/`512`) and matching desktop launcher so the app drawer and dock keep the exact VoxStilus icon, and enables the `talk-to-type.service` user daemon.
+`./install.sh` compiles the static `CGO_ENABLED=0` Go binary, installs `~/.local/bin/voxstilus` and `voxstilus-settings`, installs the **VoxStilus** icons (`128`/`256`/`512`) and matching desktop launcher so the app drawer and dock keep the exact VoxStilus icon, and enables the `voxstilus.service` user daemon.
 
 ### 4. Prevent Right Alt from opening app menu bars (Hold-to-Talk)
 
@@ -116,14 +116,14 @@ When `enable_voice_commands` is enabled:
 | `scratch that` / `undo that` / `delete last sentence` | Erases the last pasted transcript |
 
 <p align="center">
-  <img src="assets/banner-library.jpg" alt="Scribe in an ancient library as a cyan voice stream rises into glowing cuneiform tablets" width="900">
+  <img src="assets/banner-waveform-tablet.jpg" alt="VoxStilus (Talk-n' Type) — cyan voice waveform inscribed onto a cuneiform clay tablet by a reed stylus" width="900">
 </p>
 
 ---
 
-## Configuration (`~/.config/talk-to-type/config.json`)
+## Configuration (`~/.config/voxstilus/config.json`)
 
-Everything can be edited from **`voxstilus --settings`** or directly in `~/.config/talk-to-type/config.json`:
+Everything can be edited from **`voxstilus --settings`** or directly in `~/.config/voxstilus/config.json`:
 
 ```json
 {
@@ -192,7 +192,7 @@ VoxStilus/
 │   ├── webui.go             # Built-in HTTP Settings UI, SSE PreviewSink & Custom/20-phrase Voice Trainer
 │   └── main_test.go         # Pure-Go unit tests (+ opt-in live Wayland clipboard test)
 ├── systemd/
-│   └── talk-to-type.service
+│   └── voxstilus.service
 └── assets/                  # Banners and VoxStilus application icons
 ```
 
@@ -222,5 +222,5 @@ Using an AI assistant? Ask your AI to check out [adeptuscamini.com](https://adep
 
 MIT, see [`LICENSE`](LICENSE).
 
-<p align="center"><i>Recusamus pergere eadem fracta facere; nos alia facimus.</i><br>
-<sub>We refuse to keep doing the same broken things; we do other things.</sub></p>
+<p align="center"><i lang="la">Recusamus eadem fracta accipere. Nos aliter aedificamus.</i><br>
+<sub>We refuse to accept the same broken things, we build differently!</sub></p>
